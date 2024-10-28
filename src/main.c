@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/28 22:12:45 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:34:06 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ int	main(int ac, char **av)
 {
 	t_argument	argument;
 	t_timeval	timeval;
+	t_forks		*forks;
 
-	// t_forks		*forks;
 	if (ac != 5 && ac != 6)
 		exit_with_message("usage: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]");
 	parse_argument(ac, av, &argument);
-	// forks = init_forks(argument.number_of_philosophers);
-	// print_forks(forks);
-	printf("Arguments:\n");
-	printf("number_of_philosophers: %d\n", argument.number_of_philosophers);
-	printf("time_to_die: %d\n", argument.time_to_die);
-	printf("time_to_eat: %d\n", argument.time_to_eat);
-	printf("time_to_sleep: %d\n", argument.time_to_sleep);
-	printf("times_must_eat: %d\n", argument.times_must_eat);
+	forks = init_forks(argument.number_of_philosophers);
+	print_forks(forks);
+	// printf("Arguments:\n");
+	// printf("number_of_philosophers: %d\n", argument.number_of_philosophers);
+	// printf("time_to_die: %d\n", argument.time_to_die);
+	// printf("time_to_eat: %d\n", argument.time_to_eat);
+	// printf("time_to_sleep: %d\n", argument.time_to_sleep);
+	// printf("times_must_eat: %d\n", argument.times_must_eat);
 	if (gettimeofday(&timeval, NULL) == 0)
 	{
 		printf("%ld %d has taken a fork\n", timeval.tv_sec,
