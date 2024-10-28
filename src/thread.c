@@ -6,51 +6,39 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/24 11:15:53 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/10/24 21:48:49 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
-void	print_time_stamp_with_message(t_philosophers *philo, double elapsed,
-		char *mes)
+void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 {
-	int	tmp;
+	t_timeval	timeval;
 
-	tmp = (int)elapsed;
-	printf("%d %d %s\n", tmp, philo->id, mes);
+	if (gettimeofday(&timeval, NULL) == 0)
+	{
+		printf("%ld %d %s\n", timeval.tv_sec, philo->id, mes);
+	}
+	else
+	{
+		exit_with_message("Error: gettimeofday failed");
+	}
 	return ;
 }
 
 void	loop_until_died(t_philosophers *philo)
 {
-	double			elapsed;
-	long			seconds;
-	long			useconds;
-	struct timeval	now;
-	struct timeval	start;
-
-	gettimeofday(&start, NULL);
+	if (gettimeofday(&philo->start, NULL) != 0)
+	{
+		exit_with_message("Error: gettimeofday failed");
+	}
 	while (1)
 	{
-		gettimeofday(&now, NULL);
-		seconds = now.tv_sec - start.tv_sec;
-		useconds = now.tv_usec - start.tv_usec;
-		elapsed = seconds + useconds / 1000000.0;
-		if (elapsed >= philo->time_to_die)
-		{
-			print_time_stamp_with_message(philo, elapsed, "died");
-			break ;
-		}
-		// else if (elapsed >= philo->time_to_die / 2)
-		// {
-		// 	//食べる（飢餓状態）
-		// }
-		// else if ()
-		// {
-		// 	//食べる (通常)
-		// }
-		// usleep(100000);
+		check_live_or_die(philo);
+		take_forks(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
 }
 
@@ -59,7 +47,7 @@ void	*thread_function(void *arg)
 	t_philosophers	*philo;
 
 	philo = (t_philosophers *)arg;
-	printf("Thread %d started\n", philo->id);
+	printf("philosopher %d born\n", philo->id);
 	loop_until_died(philo);
 	free(philo);
 	pthread_exit(NULL);
@@ -74,10 +62,7 @@ t_philosophers	*create_philo(t_argument *argument, int i)
 		exit_with_message("malloc failed");
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
-	philo->times_must_eat = argument->times_must_eat;
-	philo->time_to_die = argument->time_to_die;
-	philo->time_to_eat = argument->time_to_eat;
-	philo->time_to_sleep = argument->time_to_sleep;
+	philo->argument = argument;
 	return (philo);
 }
 
@@ -90,14 +75,14 @@ void	create_thread(t_argument *argument, pthread_t **threads)
 	i = 0;
 	*threads = malloc(argument->number_of_philosophers * sizeof(pthread_t));
 	if (!(*threads))
-		exit_with_message("malloc failed");
+		exit_with_message("malloc Eroor");
 	while (i < argument->number_of_philosophers)
 	{
 		philo = create_philo(argument, i);
 		status = pthread_create(&(*threads)[i], NULL, thread_function,
 				(void *)philo);
 		if (status != 0)
-			exit_with_message("pthread_create failed");
+			exit_free_with_message("pthread_create failed", threads);
 		i++;
 	}
 }

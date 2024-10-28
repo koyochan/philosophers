@@ -6,11 +6,11 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:31:56 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/05/05 14:01:08 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:34:08 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	parse_sign_part(const char **str)
 {
@@ -71,6 +71,12 @@ double	ft_atod(const char *str)
 	result = parse_integer_part(&str);
 	fraction = parse_fraction_part(&str);
 	return (sign * (result + fraction));
+}
+
+void	exit_free_with_message(char *msg, void *ptr)
+{
+	free(ptr);
+	exit_with_message(msg);
 }
 
 void	exit_with_message(char *msg)
