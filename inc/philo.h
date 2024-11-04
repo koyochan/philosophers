@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/28 22:10:07 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/05 05:56:54 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ typedef struct s_forks
 typedef struct s_philosophers
 {
 	int					id;
+	int					*died;
 	struct timeval		start;
 	struct timeval		now;
 	int					how_many_eat;
 	int					number_of_philosophers;
 	t_argument			*argument;
-	t_forks				*right_forks;
-	t_forks				*left_forks;
+	t_forks				*forks;
+	pthread_mutex_t		*died_mutex;
 	pthread_t			*threads;
 }						t_philosophers;
 
@@ -56,7 +57,7 @@ void					print_time_stamp_with_message(t_philosophers *philo,
 void					check_live_or_die(t_philosophers *philo);
 double					ft_atod(const char *str);
 void					exit_with_message(char *msg);
-void					operation_thread(t_argument *argument);
+void					operation_thread(t_argument *argument, t_forks *forks);
 void					take_forks(t_philosophers *philo);
 void					sleeping(t_philosophers *philo);
 void					thinking(t_philosophers *philo);

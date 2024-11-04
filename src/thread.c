@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/24 21:48:49 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/05 05:45:26 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,26 @@ void	*thread_function(void *arg)
 	t_philosophers	*philo;
 
 	philo = (t_philosophers *)arg;
-	printf("philosopher %d born\n", philo->id);
 	loop_until_died(philo);
 	free(philo);
 	pthread_exit(NULL);
 }
 
-t_philosophers	*create_philo(t_argument *argument, int i)
+t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks)
 {
 	t_philosophers	*philo;
 
 	philo = malloc(sizeof(t_philosophers));
 	if (!philo)
 		exit_with_message("malloc failed");
+	philo->forks = forks;
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
 	philo->argument = argument;
 	return (philo);
 }
 
-void	create_thread(t_argument *argument, pthread_t **threads)
+void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks)
 {
 	t_philosophers	*philo;
 	int				i;
@@ -78,7 +78,7 @@ void	create_thread(t_argument *argument, pthread_t **threads)
 		exit_with_message("malloc Eroor");
 	while (i < argument->number_of_philosophers)
 	{
-		philo = create_philo(argument, i);
+		philo = create_philo(argument, i, forks);
 		status = pthread_create(&(*threads)[i], NULL, thread_function,
 				(void *)philo);
 		if (status != 0)
@@ -87,7 +87,7 @@ void	create_thread(t_argument *argument, pthread_t **threads)
 	}
 }
 
-void	operation_thread(t_argument *argument)
+void	operation_thread(t_argument *argument, t_forks *forks)
 {
 	pthread_t	*threads;
 	void		*thread_result;
@@ -95,7 +95,7 @@ void	operation_thread(t_argument *argument)
 	int			i;
 
 	i = 0;
-	create_thread(argument, &threads);
+	create_thread(argument, &threads, forks);
 	while (i < argument->number_of_philosophers)
 	{
 		status = pthread_join(threads[i], &thread_result);

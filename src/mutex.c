@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:20 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/28 22:33:19 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/05 05:27:12 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,4 @@ t_forks	*init_forks(int number_of_forks)
 		i++;
 	}
 	return (forks);
-}
-
-void	print_forks(t_forks *forks)
-{
-	printf("Number of forks: %d\n", forks->number_of_forks);
 }
