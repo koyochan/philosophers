@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:31:56 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/10/24 14:34:08 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/06 12:13:15 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,14 @@ double	ft_atod(const char *str)
 	return (sign * (result + fraction));
 }
 
-void	exit_free_with_message(char *msg, void *ptr)
+void	exit_free_philo_with_message(t_philosophers *philo, char *msg)
 {
-	free(ptr);
+	free(philo->died);
+	free(philo->died_mutex);
+	free(philo->forks->mutex);
+	free(philo->forks);
+	free(philo->threads);
+	free(philo);
 	exit_with_message(msg);
 }
 

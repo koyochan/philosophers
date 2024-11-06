@@ -6,13 +6,13 @@
 #    By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 11:28:35 by kotkobay          #+#    #+#              #
-#    Updated: 2024/11/05 05:58:25 by kotkobay         ###   ########.fr        #
+#    Updated: 2024/11/06 11:36:41 by kotkobay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
+CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 NAME = philo
 SRC = src/main.c src/utils.c src/thread.c src/philosophers_behaiver.c src/mutex.c
 OBJ = $(SRC:.c=.o)

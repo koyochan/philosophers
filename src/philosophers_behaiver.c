@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/05 05:58:08 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/06 12:18:40 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void	check_live_or_die(t_philosophers *philo)
 	milliseconds = (philo->now.tv_sec - philo->start.tv_sec) * 1000;
 	useconds = (philo->now.tv_usec - philo->start.tv_usec) / 1000;
 	elapsed = milliseconds + useconds;
-	if (elapsed >= philo->argument->time_to_die)
+	if (elapsed >= philo->argument->time_to_die || *(philo->died) == 1)
 	{
 		print_time_stamp_with_message(philo, "died");
+		free(philo->forks->mutex);
 		free(philo);
-		exit(1);
 		pthread_exit(NULL);
 	}
+	return ;
 }
 
 void	eat(t_philosophers *philo)
@@ -60,6 +61,11 @@ void	eat(t_philosophers *philo)
 		check_live_or_die(philo);
 	}
 	philo->how_many_eat++;
+	// if (philo->argument->times_must_eat != -1
+	// 	&& philo->how_many_eat >= philo->argument->times_must_eat)
+	// {
+	// 	// TODO exit all thread and free all memory
+	// }
 	return ;
 }
 
@@ -138,4 +144,11 @@ void	sleeping(t_philosophers *philo)
 void	thinking(t_philosophers *philo)
 {
 	print_time_stamp_with_message(philo, "is thinking");
+}
+
+void	died(t_philosophers *philo)
+{
+	pthread_mutex_lock(philo->died_mutex);
+	*(philo->died) = 1;
+	pthread_mutex_unlock(philo->died_mutex);
 }
