@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/17 12:37:25 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/17 12:46:07 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,13 @@ void	take_forks(t_philosophers *philo)
 	right_fork = philo->id % philo->number_of_philosophers;
 	if (philo->number_of_philosophers == 1)
 	{
+		// 1人の場合、唯一のフォークを取り、time_to_dieまで待つ
+		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
+		print_time_stamp_with_message(philo, "has taken a fork");
+		// 死ぬまで待つ
+		usleep(philo->argument->time_to_die * 1000);
 		print_time_stamp_with_message(philo, "died");
+		pthread_mutex_unlock(&philo->forks->mutex[left_fork]); // 必要なら解放
 		pthread_exit(NULL);
 	}
 	else if (left_fork < right_fork)
@@ -114,7 +120,6 @@ void	take_forks(t_philosophers *philo)
 		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 	}
 	print_time_stamp_with_message(philo, "has taken a fork");
-	// フォークを取った後の処理
 	eat(philo);
 	put_forks(philo);
 }
