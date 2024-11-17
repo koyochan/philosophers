@@ -6,19 +6,27 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/06 12:21:01 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/17 10:17:02 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
 
 void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 {
 	t_timeval	timeval;
+	long		current_time_in_ms;
+	long		elapsed_time;
 
 	if (gettimeofday(&timeval, NULL) == 0)
 	{
-		printf("%ld %d %s\n", timeval.tv_sec, philo->id, mes);
+		current_time_in_ms = (timeval.tv_sec * 1000) + (timeval.tv_usec / 1000);
+		// 開始時刻との差分を計算（経過時間）
+		elapsed_time = current_time_in_ms - philo->start_time_in_ms;
+		printf("%ld %d %s\n", elapsed_time, philo->id, mes);
 	}
 	else
 	{
@@ -52,13 +60,15 @@ void	*thread_function(void *arg)
 	pthread_exit(NULL);
 }
 
-t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks)
+t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
+		long start_time_in_ms)
 {
 	t_philosophers	*philo;
 
 	philo = malloc(sizeof(t_philosophers));
 	if (!philo)
 		exit_with_message("malloc failed");
+	philo->start_time_in_ms = start_time_in_ms;
 	philo->forks = forks;
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
@@ -80,7 +90,8 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks)
 	return (philo);
 }
 
-void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks)
+void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
+		long start_time_in_ms)
 {
 	t_philosophers	*philo;
 	int				i;
@@ -92,7 +103,7 @@ void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks)
 		exit_with_message("malloc Eroor");
 	while (i < argument->number_of_philosophers)
 	{
-		philo = create_philo(argument, i, forks);
+		philo = create_philo(argument, i, forks, start_time_in_ms);
 		status = pthread_create(&(*threads)[i], NULL, thread_function,
 				(void *)philo);
 		if (status != 0)
@@ -101,7 +112,8 @@ void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks)
 	}
 }
 
-void	operation_thread(t_argument *argument, t_forks *forks)
+void	operation_thread(t_argument *argument, t_forks *forks,
+		long start_time_in_ms)
 {
 	pthread_t	*threads;
 	void		*thread_result;
@@ -109,7 +121,7 @@ void	operation_thread(t_argument *argument, t_forks *forks)
 	int			i;
 
 	i = 0;
-	create_thread(argument, &threads, forks);
+	create_thread(argument, &threads, forks, start_time_in_ms);
 	while (i < argument->number_of_philosophers)
 	{
 		status = pthread_join(threads[i], &thread_result);

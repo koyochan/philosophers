@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/06 12:18:40 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/17 10:25:01 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 void	check_live_or_die(t_philosophers *philo)
 {
-	int		milliseconds;
-	int		useconds;
-	double	elapsed;
+	long	elapsed_ms;
 
 	if (gettimeofday(&philo->now, NULL) != 0)
 	{
 		exit_with_message("Error: gettimeofday failed");
 	}
-	milliseconds = (philo->now.tv_sec - philo->start.tv_sec) * 1000;
-	useconds = (philo->now.tv_usec - philo->start.tv_usec) / 1000;
-	elapsed = milliseconds + useconds;
-	if (elapsed >= philo->argument->time_to_die || *(philo->died) == 1)
+	// ミリ秒単位で経過時間を計算
+	elapsed_ms = (philo->now.tv_sec - philo->start.tv_sec) * 1000;
+	elapsed_ms += (philo->now.tv_usec - philo->start.tv_usec) / 1000;
+	// マイクロ秒の計算結果が負の場合の調整
+	if (philo->now.tv_usec < philo->start.tv_usec)
+	{
+		elapsed_ms -= 1000; // 1秒分引く
+	}
+	// 死亡条件をチェック
+	if (elapsed_ms >= philo->argument->time_to_die || *(philo->died) == 1)
 	{
 		print_time_stamp_with_message(philo, "died");
-		free(philo->forks->mutex);
-		free(philo);
-		pthread_exit(NULL);
+		pthread_exit(NULL); // スレッド終了
 	}
 	return ;
 }
