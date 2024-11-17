@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/17 11:05:27 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/17 12:37:25 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ void	eat(t_philosophers *philo)
 		exit_with_message("Error: gettimeofday failed");
 	}
 	philo->how_many_eat++;
-	// if (philo->argument->times_must_eat != -1
-	// 	&& philo->how_many_eat >= philo->argument->times_must_eat)
-	// {
-	// 	// TODO exit all thread and free all memory
-	// }
 	return ;
 }
 
@@ -103,9 +98,12 @@ void	take_forks(t_philosophers *philo)
 
 	left_fork = philo->id - 1;
 	right_fork = philo->id % philo->number_of_philosophers;
-	// 現在時刻を取得して、nowを更新
-	// 小さい方のフォークからロックすることでデッドロックを回避
-	if (left_fork < right_fork)
+	if (philo->number_of_philosophers == 1)
+	{
+		print_time_stamp_with_message(philo, "died");
+		pthread_exit(NULL);
+	}
+	else if (left_fork < right_fork)
 	{
 		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
