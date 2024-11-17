@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/17 10:25:01 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/17 11:05:27 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void	eat(t_philosophers *philo)
 		usleep(1000);
 		check_live_or_die(philo);
 	}
+	if (gettimeofday(&philo->start, NULL) != 0)
+	{
+		exit_with_message("Error: gettimeofday failed");
+	}
 	philo->how_many_eat++;
 	// if (philo->argument->times_must_eat != -1
 	// 	&& philo->how_many_eat >= philo->argument->times_must_eat)
@@ -100,7 +104,6 @@ void	take_forks(t_philosophers *philo)
 	left_fork = philo->id - 1;
 	right_fork = philo->id % philo->number_of_philosophers;
 	// 現在時刻を取得して、nowを更新
-	print_time_stamp_with_message(philo, "is taken a fork");
 	// 小さい方のフォークからロックすることでデッドロックを回避
 	if (left_fork < right_fork)
 	{
@@ -112,6 +115,7 @@ void	take_forks(t_philosophers *philo)
 		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
 		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 	}
+	print_time_stamp_with_message(philo, "has taken a fork");
 	// フォークを取った後の処理
 	eat(philo);
 	put_forks(philo);
