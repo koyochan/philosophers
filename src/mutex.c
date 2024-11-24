@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:20 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/24 14:50:14 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:13:32 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_forks	*init_forks(int number_of_forks)
 	{
 		exit_with_message("Error: Could not allocate memory for forks");
 	}
-	printf("%d\n", number_of_forks);
 	forks->mutex = malloc(number_of_forks * sizeof(pthread_mutex_t));
 	if (!forks->mutex)
 	{
