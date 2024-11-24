@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:20 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/06 12:18:29 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:13:32 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_forks	*init_forks(int number_of_forks)
 	forks->mutex = malloc(number_of_forks * sizeof(pthread_mutex_t));
 	if (!forks->mutex)
 	{
-		exit_with_message("Error");
+		exit_with_message("Malloc Error");
 	}
 	forks->number_of_forks = number_of_forks;
 	i = 0;

@@ -3,6 +3,8 @@ philo
 .DS_Store
 socrates
 Philosophers
+philo
+
 # Prerequisites
 *.d
 document
