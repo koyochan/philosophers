@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/17 10:14:38 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:48:00 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_philosophers
 	int					number_of_philosophers;
 	t_argument			*argument;
 	t_forks				*forks;
-	pthread_mutex_t		*died_mutex;
+	pthread_mutex_t		*end_mutex;
 	pthread_t			*threads;
 }						t_philosophers;
 

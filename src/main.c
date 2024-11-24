@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/17 10:14:51 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:45:42 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	main(int ac, char **av)
 		fprintf(stderr, "Error: Failed to get start time\n");
 		return (1);
 	}
-	// 開始時刻をミリ秒単位で計算
 	start_time_in_ms = (start_timeval.tv_sec * 1000) + (start_timeval.tv_usec
 			/ 1000);
 	if (ac != 5 && ac != 6)
