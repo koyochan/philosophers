@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:31:56 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/20 23:48:31 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/24 13:32:31 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ double	ft_atod(const char *str)
 
 void	exit_free_philo_with_message(t_philosophers *philo, char *msg)
 {
-	free(philo->died);
-	free(philo->end_mutex);
 	free(philo->forks->mutex);
 	free(philo->forks);
 	free(philo->threads);

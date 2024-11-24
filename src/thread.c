@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/24 12:52:24 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/24 14:28:03 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,12 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
 	philo->argument = argument;
-	philo->died = malloc(sizeof(int));
-	if (!philo->died)
-	{
-		free(philo);
-		exit_with_message("malloc for died flag failed");
-	}
-	*(philo->died) = 0;
-	philo->end_mutex = malloc(sizeof(pthread_mutex_t));
-	if (!philo->end_mutex || pthread_mutex_init(philo->end_mutex, NULL) != 0)
-	{
-		free(philo->died);
-		free(philo);
-		exit_with_message("died mutex initialization failed");
-	}
+	// philo->end_mutex = malloc(sizeof(pthread_mutex_t));
+	// if (!philo->end_mutex || pthread_mutex_init(philo->end_mutex, NULL) != 0)
+	// {
+	// 	free(philo);
+	// 	exit_with_message("died mutex initialization failed");
+	// }
 	return (philo);
 }
 
