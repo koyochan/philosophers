@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/25 20:55:56 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:08:48 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ typedef struct timeval	t_timeval;
 
 typedef struct s_argument
 {
-	int stop_simulation;
+	int					stop_simulation;
 
-pthread_mutex_t		end_mutex;
-pthread_mutex_t		eat_mutex;
+	pthread_mutex_t		end_mutex;
 	int					number_of_philosophers;
 	int					time_to_die;
 	int					time_to_eat;
@@ -45,7 +44,7 @@ typedef struct s_forks
 typedef struct s_philosophers
 {
 	long				start_time_in_ms;
-	int is_holding_forks;
+	int					is_holding_forks;
 	int					id;
 	struct timeval		start;
 	struct timeval		now;
@@ -53,10 +52,10 @@ typedef struct s_philosophers
 	t_argument			*argument;
 	t_forks				*forks;
 	pthread_t			*threads;
-		int total_eat_count;
+	int					total_eat_count;
 }						t_philosophers;
 
-void	put_forks(t_philosophers *philo, int put_end);
+void					put_forks(t_philosophers *philo, int put_end);
 void					print_time_stamp_with_message(t_philosophers *philo,
 							char *mes);
 void					check_live_or_die(t_philosophers *philo);

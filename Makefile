@@ -6,12 +6,12 @@
 #    By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 11:28:35 by kotkobay          #+#    #+#              #
-#    Updated: 2024/11/24 14:56:02 by kotkobay         ###   ########.fr        #
+#    Updated: 2024/11/25 21:01:56 by kotkobay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 NAME = philo
 SRC = src/main.c src/utils.c src/thread.c src/philosophers_behaiver.c src/mutex.c

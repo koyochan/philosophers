@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/25 20:56:47 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/26 06:04:55 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 void	argument_assignment(int ac, char **av, t_argument **argument)
 {
-	
 	(*argument)->stop_simulation = 0;
 	(*argument)->number_of_philosophers = ft_atod(av[1]);
 	(*argument)->time_to_die = ft_atod(av[2]);
@@ -30,17 +29,10 @@ void	argument_assignment(int ac, char **av, t_argument **argument)
 	else
 		(*argument)->times_must_eat = -1;
 	if (pthread_mutex_init(&(*argument)->end_mutex, NULL) != 0)
-    {
-		free(*argument); 
-       	exit_with_message("Mutex Error");
-    }
-
-    if (pthread_mutex_init(&(*argument)->eat_mutex, NULL) != 0)
-    {
-        pthread_mutex_destroy(&(*argument)->end_mutex); 
-		free(*argument); 
-      	exit_with_message("Mutex Error");
-    }
+	{
+		free(*argument);
+		exit_with_message("Mutex Error");
+	}
 }
 
 void	parse_argument(int ac, char **av, t_argument *argument)
@@ -50,6 +42,10 @@ void	parse_argument(int ac, char **av, t_argument *argument)
 
 	j = 0;
 	i = 1;
+	if (!av[i] || !av[i][j])
+	{
+		exit_with_message("Error\n");
+	}
 	while (av[i])
 	{
 		j = 0;
@@ -85,11 +81,10 @@ int	main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		exit_with_message("usage: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]");
 	argument = malloc(sizeof(t_argument));
-    if (!argument)
-    {
-        exit_with_message("Malloc Error");
-    }
-
+	if (!argument)
+	{
+		exit_with_message("Malloc Error");
+	}
 	parse_argument(ac, av, &(*argument));
 	forks = init_forks(argument->number_of_philosophers);
 	operation_thread(&(*argument), forks, start_time_in_ms);
