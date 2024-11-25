@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/24 15:36:01 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:19:38 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_philosophers
 	int					id;
 	struct timeval		start;
 	struct timeval		now;
-	int					how_many_eat;
 	int					number_of_philosophers;
 	t_argument			*argument;
 	t_forks				*forks;

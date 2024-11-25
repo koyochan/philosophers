@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/24 15:17:08 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:24:04 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 void	argument_assignment(int ac, char **av, t_argument **argument)
 {
+	
 	(*argument)->stop_simulation = 0;
     (*argument)->total_eat_count = 0; 
 	(*argument)->number_of_philosophers = ft_atod(av[1]);
