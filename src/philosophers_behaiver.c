@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/25 20:35:57 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:56:59 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,11 @@ void check_live_or_die(t_philosophers *philo)
     }
 
     pthread_mutex_lock(&philo->argument->eat_mutex);
-    if (philo->argument->times_must_eat != -1 &&  philo->argument->total_eat_count >= philo->argument->times_must_eat)
+    if (philo->argument->times_must_eat != -1 &&  philo->total_eat_count >= philo->argument->times_must_eat)
     {
         pthread_mutex_lock(&philo->argument->end_mutex);
         if (philo->argument->stop_simulation == 0) 
         {
-			printf("tinko");
             philo->argument->stop_simulation = 1;  
         }
         pthread_mutex_unlock(&philo->argument->end_mutex); 
@@ -92,9 +91,7 @@ void	eat(t_philosophers *philo)
         exit_with_message("Error: gettimeofday failed");
     }
 
-    pthread_mutex_lock(&philo->argument->eat_mutex);
-    philo->argument->total_eat_count++;  
-    pthread_mutex_unlock(&philo->argument->eat_mutex);
+    philo->total_eat_count++;  
 
     return;
 }
