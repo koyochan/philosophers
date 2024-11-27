@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/26 06:04:55 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:53:58 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int ac, char **av)
 	start_time_in_ms = (start_timeval.tv_sec * 1000) + (start_timeval.tv_usec
 			/ 1000);
 	if (ac != 5 && ac != 6)
-		exit_with_message("usage: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]");
+		exit_with_message("ERROR");
 	argument = malloc(sizeof(t_argument));
 	if (!argument)
 	{
