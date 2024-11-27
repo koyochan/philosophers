@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:09:38 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/27 11:29:04 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,10 @@ void					create_thread(t_argument *argument, pthread_t **threads,
 							t_forks *forks, long start_time_in_ms);
 void					thinking(t_philosophers *philo);
 void					handle_death(t_philosophers *philo);
+void					check_elapsed_time(t_philosophers *philo);
+void					handle_death(t_philosophers *philo);
+void					check_eating_limits(t_philosophers *philo);
+void					sleeping(t_philosophers *philo);
+void					eat(t_philosophers *philo);
 
 #endif
