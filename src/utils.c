@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:31:56 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/25 21:00:33 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:56:57 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,4 @@ void	exit_free_philo_with_message(t_philosophers *philo, char *msg)
 	free(philo->threads);
 	free(philo);
 	exit_with_message(msg);
-}
-
-void	exit_with_message(char *msg)
-{
-	printf("%s\n", msg);
-	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/25 21:08:48 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/27 11:09:38 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,12 @@ void					exit_free_with_message(t_philosophers *philo,
 							void *ptr);
 t_forks					*init_forks(int number_of_forks);
 void					print_forks(t_forks *forks);
+void					exit_with_message(char *msg);
+void					operation_thread(t_argument *argument, t_forks *forks,
+							long start_time_in_ms);
+void					create_thread(t_argument *argument, pthread_t **threads,
+							t_forks *forks, long start_time_in_ms);
+void					thinking(t_philosophers *philo);
+void					handle_death(t_philosophers *philo);
 
 #endif
