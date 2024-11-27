@@ -6,14 +6,11 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/24 15:25:23 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/27 11:01:11 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
 
 void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 {
@@ -72,12 +69,6 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
 	philo->argument = argument;
-	// philo->end_mutex = malloc(sizeof(pthread_mutex_t));
-	// if (!philo->end_mutex || pthread_mutex_init(philo->end_mutex, NULL) != 0)
-	// {
-	// 	free(philo);
-	// 	exit_with_message("died mutex initialization failed");
-	// }
 	return (philo);
 }
 
@@ -101,24 +92,4 @@ void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
 			exit_with_message("pthread_create failed");
 		i++;
 	}
-}
-
-void	operation_thread(t_argument *argument, t_forks *forks,
-		long start_time_in_ms)
-{
-	pthread_t	*threads;
-	void		*thread_result;
-	int			status;
-	int			i;
-
-	i = 0;
-	create_thread(argument, &threads, forks, start_time_in_ms);
-	while (i < argument->number_of_philosophers)
-	{
-		status = pthread_join(threads[i], &thread_result);
-		if (status != 0)
-			exit_with_message("pthread_join failed");
-		i++;
-	}
-	free(threads);
 }
