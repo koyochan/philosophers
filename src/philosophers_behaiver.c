@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:30:36 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:31:19 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	check_live_or_die(t_philosophers *philo)
 	pthread_mutex_lock(&philo->argument->end_mutex);
 	if (philo->argument->stop_simulation == 1)
 	{
+		printf("%d\n", philo->id);
 		pthread_mutex_unlock(&philo->argument->end_mutex);
 		pthread_exit(NULL);
 	}

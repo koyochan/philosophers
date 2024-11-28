@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:01:26 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:39:17 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 	int			status;
 	int			i;
 
-	i = 0;
+	i = 1;
 	create_thread(argument, &threads, forks, start_time_in_ms);
-	while (i < argument->number_of_philosophers)
+	while (i <= argument->number_of_philosophers)
 	{
 		status = pthread_join(threads[i], &thread_result);
 		if (status != 0)
