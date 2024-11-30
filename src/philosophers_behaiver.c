@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 21:10:23 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:35:37 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,11 @@ void	lock_forks(t_philosophers *philo, int left_fork, int right_fork)
 
 void	take_forks(t_philosophers *philo)
 {
-	int left_fork;
-	int right_fork;
+	int	left_fork;
+	int	right_fork;
 
 	left_fork = philo->id - 1;
 	right_fork = philo->id % philo->number_of_philosophers;
-
 	check_live_or_die(philo);
 	if (philo->number_of_philosophers == 1)
 	{

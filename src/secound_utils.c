@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 21:32:09 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:36:47 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ void	cleanup_resources(t_argument *argument, t_forks *forks)
 {
 	int	i;
 
-	for (i = 0; i < forks->number_of_forks; i++)
+	i = 0;
+	while (i < forks->number_of_forks)
+	{
+		i++;
 		pthread_mutex_destroy(&forks->mutex[i]);
+	}
 	free(forks->mutex);
 	free(forks);
 	pthread_mutex_destroy(&argument->end_mutex);
