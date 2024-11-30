@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 11:27:37 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:30:44 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 20:57:47 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	perform_eating(t_philosophers *philo, struct timeval start_behaivor)
 			exit_with_message("Error: gettimeofday failed");
 		elapsed = calculate_elapsed_time(&start_behaivor, &philo->now);
 		usleep(500);
-		check_live_or_die(philo);
 	}
 }
 
