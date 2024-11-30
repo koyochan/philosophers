@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:01:11 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 22:11:00 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	loop_until_died(t_philosophers *philo)
 	}
 	while (1)
 	{
-		check_live_or_die(philo);
 		take_forks(philo);
 		sleeping(philo);
 		thinking(philo);
@@ -79,11 +78,11 @@ void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
 	int				i;
 	int				status;
 
-	i = 0;
+	i = 1;
 	*threads = malloc(argument->number_of_philosophers * sizeof(pthread_t));
 	if (!(*threads))
 		exit_with_message("malloc Eroor");
-	while (i < argument->number_of_philosophers)
+	while (i <= argument->number_of_philosophers)
 	{
 		philo = create_philo(argument, i, forks, start_time_in_ms);
 		status = pthread_create(&(*threads)[i], NULL, thread_function,

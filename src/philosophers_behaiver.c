@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:30:36 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 22:15:21 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 void	check_live_or_die(t_philosophers *philo)
 {
+	int	left_fork;
+	int	right_fork;
+
 	check_elapsed_time(philo);
 	check_eating_limits(philo);
 	pthread_mutex_lock(&philo->argument->end_mutex);
 	if (philo->argument->stop_simulation == 1)
 	{
+		if (philo->is_holding_forks)
+		{
+			left_fork = philo->id - 1;
+			right_fork = philo->id % philo->number_of_philosophers;
+			pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
+			pthread_mutex_unlock(&philo->forks->mutex[right_fork]);
+			philo->is_holding_forks = 0;
+		}
 		pthread_mutex_unlock(&philo->argument->end_mutex);
 		pthread_exit(NULL);
 	}
@@ -59,15 +70,15 @@ void	handle_single_philosopher(t_philosophers *philo, int left_fork)
 
 void	lock_forks(t_philosophers *philo, int left_fork, int right_fork)
 {
-	if (left_fork < right_fork)
+	while (pthread_mutex_trylock(&philo->forks->mutex[left_fork]) != 0)
 	{
-		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
-		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
+		check_live_or_die(philo);
+		usleep(500);
 	}
-	else
+	while (pthread_mutex_trylock(&philo->forks->mutex[right_fork]) != 0)
 	{
-		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
-		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
+		check_live_or_die(philo);
+		usleep(500);
 	}
 }
 
@@ -80,12 +91,17 @@ void	take_forks(t_philosophers *philo)
 	right_fork = philo->id % philo->number_of_philosophers;
 	check_live_or_die(philo);
 	if (philo->number_of_philosophers == 1)
+	{
 		handle_single_philosopher(philo, left_fork);
+	}
 	else
+	{
 		lock_forks(philo, left_fork, right_fork);
+	}
 	philo->is_holding_forks = 1;
 	check_live_or_die(philo);
 	print_time_stamp_with_message(philo, "has taken a fork");
 	eat(philo);
+	check_live_or_die(philo);
 	put_forks(philo, 0);
 }
