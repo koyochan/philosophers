@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 11:27:37 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 21:21:42 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 22:04:54 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	perform_eating(t_philosophers *philo, struct timeval start_behaivor)
 
 	elapsed = 0;
 	print_time_stamp_with_message(philo, "is eating");
-	check_live_or_die(philo);
 	while (elapsed <= philo->argument->time_to_eat)
 	{
 		if (gettimeofday(&philo->now, NULL) != 0)

@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 21:25:43 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 22:11:00 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	loop_until_died(t_philosophers *philo)
 	}
 	while (1)
 	{
-		check_live_or_die(philo);
 		take_forks(philo);
 		sleeping(philo);
 		thinking(philo);

@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:20:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:28:18 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 22:11:21 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	sleeping(t_philosophers *philo)
 	{
 		exit_with_message("Error: gettimeofday failed");
 	}
+	check_live_or_die(philo);
 	print_time_stamp_with_message(philo, "is sleeping");
 	while (elapsed <= philo->argument->time_to_sleep)
 	{
