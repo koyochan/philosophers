@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 11:27:37 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 20:57:47 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:21:42 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	perform_eating(t_philosophers *philo, struct timeval start_behaivor)
 
 	elapsed = 0;
 	print_time_stamp_with_message(philo, "is eating");
+	check_live_or_die(philo);
 	while (elapsed <= philo->argument->time_to_eat)
 	{
 		if (gettimeofday(&philo->now, NULL) != 0)
@@ -48,8 +49,8 @@ void	eat(t_philosophers *philo)
 	struct timeval	start_behaivor;
 
 	start_eating_timer(&start_behaivor);
-	perform_eating(philo, start_behaivor);
 	if (gettimeofday(&philo->start, NULL) != 0)
 		exit_with_message("Error: gettimeofday failed");
+	perform_eating(philo, start_behaivor);
 	philo->total_eat_count++;
 }

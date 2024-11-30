@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 20:52:27 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:10:23 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ void	take_forks(t_philosophers *philo)
 	check_live_or_die(philo);
 	print_time_stamp_with_message(philo, "has taken a fork");
 	eat(philo);
+	check_live_or_die(philo);
 	put_forks(philo, 0);
 }

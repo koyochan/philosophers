@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 20:25:17 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:32:09 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ void	exit_with_message(char *msg)
 	exit(1);
 }
 
+void	cleanup_resources(t_argument *argument, t_forks *forks)
+{
+	int	i;
+
+	for (i = 0; i < forks->number_of_forks; i++)
+		pthread_mutex_destroy(&forks->mutex[i]);
+	free(forks->mutex);
+	free(forks);
+	pthread_mutex_destroy(&argument->end_mutex);
+	free(argument);
+}
+
 void	operation_thread(t_argument *argument, t_forks *forks,
 		long start_time_in_ms)
 {
@@ -26,8 +38,8 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 	int			status;
 	int			i;
 
-	i = 1;
 	create_thread(argument, &threads, forks, start_time_in_ms);
+	i = 1;
 	while (i <= argument->number_of_philosophers)
 	{
 		status = pthread_join(threads[i], &thread_result);
@@ -36,4 +48,5 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 		i++;
 	}
 	free(threads);
+	cleanup_resources(argument, forks);
 }
