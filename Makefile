@@ -6,7 +6,7 @@
 #    By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 11:28:35 by kotkobay          #+#    #+#              #
-#    Updated: 2024/11/30 20:56:02 by kotkobay         ###   ########.fr        #
+#    Updated: 2024/12/01 13:51:58 by kotkobay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = gcc
 # CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 NAME = philo
-SRC = src/main.c src/utils.c src/thread.c src/philosophers_behaiver.c src/mutex.c src/secound_utils.c src/secound_philosophers_behaiver.c src/eat.c
+SRC = src/main.c src/utils.c src/thread.c src/philosophers_behaiver.c src/secound_utils.c src/secound_philosophers_behaiver.c src/eat.c
 OBJ = $(SRC:.c=.o)
 all:$(NAME)
 

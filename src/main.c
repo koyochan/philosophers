@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:32:03 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/01 13:27:57 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:51:32 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,31 @@ void	parse_argument(int ac, char **av, t_argument *argument)
 		i++;
 	}
 	argument_assignment(ac, av, &argument);
+}
+
+t_forks	*init_forks(int number_of_forks)
+{
+	t_forks	*forks;
+	int		i;
+
+	forks = malloc(sizeof(t_forks));
+	if (!forks)
+	{
+		exit_with_message("Error: Could not allocate memory for forks");
+	}
+	forks->mutex = malloc(number_of_forks * sizeof(pthread_mutex_t));
+	if (!forks->mutex)
+	{
+		exit_with_message("Malloc Error");
+	}
+	forks->number_of_forks = number_of_forks;
+	i = 0;
+	while (i < number_of_forks)
+	{
+		pthread_mutex_init(&forks->mutex[i], NULL);
+		i++;
+	}
+	return (forks);
 }
 
 int	main(int ac, char **av)
