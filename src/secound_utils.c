@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 19:10:09 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:19:36 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,21 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 		i++;
 	}
 	cleanup_resources(argument, forks);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	// 両方の文字列が NULL の場合は 0 を返す（同じ）
+	if (s1 == NULL && s2 == NULL)
+		return (0);
+	// 文字列が異なる場合、またはどちらかが NULL の場合に処理
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		s1++;
+		s2++;
+	}
+	// 片方の文字列が終わった場合、長さが異なるならその差を返す
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

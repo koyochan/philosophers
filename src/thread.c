@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 19:10:02 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:23:27 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 	long		current_time_in_ms;
 	long		elapsed_time;
 
+	// mes が "died" でない場合にのみロック処理を行う
+	if (ft_strcmp(mes, "died") != 0)
+	{
+		pthread_mutex_lock(&philo->argument->end_mutex);
+		if (philo->argument->stop_simulation)
+		{
+			if (philo->is_holding_left_fork || philo->is_holding_right_fork)
+				put_forks(philo, 1);
+			pthread_mutex_unlock(&philo->argument->end_mutex); // ロック解除
+			pthread_exit(NULL);                                // スレッドを終了
+		}
+		pthread_mutex_unlock(&philo->argument->end_mutex); // ロック解除
+	}
+	// 時刻を取得して表示
 	if (gettimeofday(&timeval, NULL) == 0)
 	{
 		current_time_in_ms = (timeval.tv_sec * 1000) + (timeval.tv_usec / 1000);

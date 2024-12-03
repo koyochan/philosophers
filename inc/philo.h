@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/02 20:44:18 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:19:51 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void					handle_death(t_philosophers *philo);
 void					check_eating_limits(t_philosophers *philo);
 void					sleeping(t_philosophers *philo);
 void					eat(t_philosophers *philo);
+int						ft_strcmp(const char *s1, const char *s2);
 
 #endif
