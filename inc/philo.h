@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:29:04 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:44:18 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ typedef struct s_forks
 typedef struct s_philosophers
 {
 	long				start_time_in_ms;
-	int					is_holding_forks;
+	int					is_holding_left_fork;
+	int					is_holding_right_fork;
 	int					id;
 	struct timeval		start;
 	struct timeval		now;

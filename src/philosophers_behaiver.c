@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 22:15:21 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:45:54 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,17 @@ void	check_live_or_die(t_philosophers *philo)
 	pthread_mutex_lock(&philo->argument->end_mutex);
 	if (philo->argument->stop_simulation == 1)
 	{
-		if (philo->is_holding_forks)
+		left_fork = philo->id - 1;
+		right_fork = philo->id % philo->number_of_philosophers;
+		if (philo->is_holding_left_fork)
 		{
-			left_fork = philo->id - 1;
-			right_fork = philo->id % philo->number_of_philosophers;
 			pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
+			philo->is_holding_left_fork = 0;
+		}
+		if (philo->is_holding_right_fork)
+		{
 			pthread_mutex_unlock(&philo->forks->mutex[right_fork]);
-			philo->is_holding_forks = 0;
+			philo->is_holding_right_fork = 0;
 		}
 		pthread_mutex_unlock(&philo->argument->end_mutex);
 		pthread_exit(NULL);
@@ -43,19 +47,18 @@ void	put_forks(t_philosophers *philo, int put_end)
 
 	left_fork = philo->id - 1;
 	right_fork = philo->id % philo->number_of_philosophers;
-	if (left_fork < right_fork)
+	if (philo->is_holding_left_fork)
 	{
 		pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
-		pthread_mutex_unlock(&philo->forks->mutex[right_fork]);
+		philo->is_holding_left_fork = 0;
 	}
-	else
+	if (philo->is_holding_right_fork)
 	{
 		pthread_mutex_unlock(&philo->forks->mutex[right_fork]);
-		pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
+		philo->is_holding_right_fork = 0;
 	}
 	if (!put_end)
 		print_time_stamp_with_message(philo, "has put a fork");
-	philo->is_holding_forks = 0;
 }
 
 void	handle_single_philosopher(t_philosophers *philo, int left_fork)
@@ -70,15 +73,21 @@ void	handle_single_philosopher(t_philosophers *philo, int left_fork)
 
 void	lock_forks(t_philosophers *philo, int left_fork, int right_fork)
 {
-	while (pthread_mutex_trylock(&philo->forks->mutex[left_fork]) != 0)
+	if (left_fork < right_fork)
 	{
+		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
+		philo->is_holding_left_fork = 1;
 		check_live_or_die(philo);
-		usleep(500);
+		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
+		philo->is_holding_right_fork = 1;
 	}
-	while (pthread_mutex_trylock(&philo->forks->mutex[right_fork]) != 0)
+	else
 	{
+		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
+		philo->is_holding_left_fork = 1;
 		check_live_or_die(philo);
-		usleep(500);
+		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
+		philo->is_holding_right_fork = 1;
 	}
 }
 
@@ -98,7 +107,6 @@ void	take_forks(t_philosophers *philo)
 	{
 		lock_forks(philo, left_fork, right_fork);
 	}
-	philo->is_holding_forks = 1;
 	check_live_or_die(philo);
 	print_time_stamp_with_message(philo, "has taken a fork");
 	eat(philo);
