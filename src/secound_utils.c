@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 18:13:28 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:10:09 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 		long start_time_in_ms)
 {
 	pthread_t	*threads;
-	pthread_t	*waiter_thread;
 	void		*thread_result;
 	int			status;
 	int			i;

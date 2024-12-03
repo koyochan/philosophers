@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 13:45:54 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:08:06 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,37 @@ void	lock_forks(t_philosophers *philo, int left_fork, int right_fork)
 {
 	if (left_fork < right_fork)
 	{
+		// 左フォークをロック
 		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 		philo->is_holding_left_fork = 1;
-		check_live_or_die(philo);
-		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
-		philo->is_holding_right_fork = 1;
+		// 右フォークをロック試行
+		if (pthread_mutex_lock(&philo->forks->mutex[right_fork]) == 0)
+		{
+			philo->is_holding_right_fork = 1;
+		}
+		else
+		{
+			// ロック失敗した場合、左フォークを解放
+			pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
+			philo->is_holding_left_fork = 0;
+		}
 	}
 	else
 	{
+		// 右フォークをロック
 		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
-		philo->is_holding_left_fork = 1;
-		check_live_or_die(philo);
-		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 		philo->is_holding_right_fork = 1;
+		// 左フォークをロック試行
+		if (pthread_mutex_lock(&philo->forks->mutex[left_fork]) == 0)
+		{
+			philo->is_holding_left_fork = 1;
+		}
+		else
+		{
+			// ロック失敗した場合、右フォークを解放
+			pthread_mutex_unlock(&philo->forks->mutex[right_fork]);
+			philo->is_holding_right_fork = 0;
+		}
 	}
 }
 

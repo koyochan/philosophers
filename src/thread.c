@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 18:11:58 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:10:02 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 	return (philo);
 }
 
-void	create_thread(t_argument *argument, pthread_t **threads,
-		pthread_t **waiter_thread, t_forks *forks, long start_time_in_ms)
+void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
+		long start_time_in_ms)
 {
 	t_philosophers	*philo;
 	int				i;
@@ -91,8 +91,8 @@ void	create_thread(t_argument *argument, pthread_t **threads,
 			exit_with_message("pthread_create failed");
 		i++;
 	}
-	status = pthread_create(&waiter_thread, NULL, waiter_function,
-			(void *)argument);
-	if (status != 0)
-		exit_with_message("pthread_create for waiter failed");
+	// status = pthread_create(&waiter_thread, NULL, waiter_function,
+	// 		(void *)argument);
+	// if (status != 0)
+	// 	exit_with_message("pthread_create for waiter failed");
 }
