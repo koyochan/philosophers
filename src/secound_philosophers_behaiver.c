@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:20:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 20:13:39 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:31:36 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,16 @@ void	check_elapsed_time(t_philosophers *philo)
 		exit_with_message("Error: gettimeofday failed");
 	elapsed_ms = (philo->now.tv_sec - philo->start.tv_sec) * 1000;
 	elapsed_ms += (philo->now.tv_usec - philo->start.tv_usec) / 1000;
-	if (elapsed_ms >= philo->argument->time_to_die)
+	pthread_mutex_lock(&philo->argument->end_mutex);
+	if (philo->argument->stop_simulation == 0
+		&& elapsed_ms >= philo->argument->time_to_die)
+	{
+		pthread_mutex_unlock(&philo->argument->end_mutex); // ロックを先に解放
 		handle_death(philo);
+		// handle_death 内で再ロック
+		return ;
+	}
+	pthread_mutex_unlock(&philo->argument->end_mutex);
 }
 
 void	handle_death(t_philosophers *philo)
@@ -35,9 +43,13 @@ void	handle_death(t_philosophers *philo)
 	if (philo->argument->stop_simulation == 0)
 	{
 		philo->argument->stop_simulation = 1;
+		pthread_mutex_unlock(&philo->argument->end_mutex);
 		print_time_stamp_with_message(philo, "died");
 	}
-	pthread_mutex_unlock(&philo->argument->end_mutex);
+	else
+	{
+		pthread_mutex_unlock(&philo->argument->end_mutex);
+	}
 	if (philo->is_holding_left_fork || philo->is_holding_right_fork)
 		put_forks(philo, 1);
 	pthread_exit(NULL);
@@ -50,35 +62,43 @@ void	check_eating_limits(t_philosophers *philo)
 	{
 		pthread_mutex_lock(&philo->argument->end_mutex);
 		if (philo->argument->stop_simulation == 0)
+		{
 			philo->argument->stop_simulation = 1;
+			pthread_mutex_unlock(&philo->argument->end_mutex);
+			pthread_exit(NULL); // スレッド終了
+		}
 		pthread_mutex_unlock(&philo->argument->end_mutex);
 	}
 }
 
 void	sleeping(t_philosophers *philo)
 {
-	struct timeval	start_behaivor;
-	int				milliseconds;
-	int				useconds;
-	double			elapsed;
+	struct timeval start_behavior;
+	int milliseconds;
+	int useconds;
+	double elapsed;
 
 	elapsed = 0;
-	if (gettimeofday(&start_behaivor, NULL) != 0)
-	{
+	if (gettimeofday(&start_behavior, NULL) != 0)
 		exit_with_message("Error: gettimeofday failed");
-	}
-	check_live_or_die(philo);
+	check_live_or_die(philo); // 初期チェック
 	print_time_stamp_with_message(philo, "is sleeping");
 	while (elapsed <= philo->argument->time_to_sleep)
 	{
-		if (gettimeofday(&philo->now, NULL) != 0)
+		pthread_mutex_lock(&philo->argument->end_mutex);
+		if (philo->argument->stop_simulation)
 		{
-			exit_with_message("Error: gettimeofday failed");
+			pthread_mutex_unlock(&philo->argument->end_mutex);
+			break ; // 早期終了
 		}
-		milliseconds = (philo->now.tv_sec - start_behaivor.tv_sec) * 1000;
-		useconds = (philo->now.tv_usec - start_behaivor.tv_usec) / 1000;
+		pthread_mutex_unlock(&philo->argument->end_mutex);
+
+		if (gettimeofday(&philo->now, NULL) != 0)
+			exit_with_message("Error: gettimeofday failed");
+		milliseconds = (philo->now.tv_sec - start_behavior.tv_sec) * 1000;
+		useconds = (philo->now.tv_usec - start_behavior.tv_usec) / 1000;
 		elapsed = milliseconds + useconds;
 		usleep(100);
-		check_live_or_die(philo);
+		check_live_or_die(philo); // 定期的なチェック
 	}
 }

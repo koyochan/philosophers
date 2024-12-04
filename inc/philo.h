@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/03 20:19:51 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:08:49 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_philosophers
 	long				start_time_in_ms;
 	int					is_holding_left_fork;
 	int					is_holding_right_fork;
+	int					left_fork;
+	int					right_fork;
 	int					id;
 	struct timeval		start;
 	struct timeval		now;
@@ -75,7 +77,8 @@ void					exit_with_message(char *msg);
 void					operation_thread(t_argument *argument, t_forks *forks,
 							long start_time_in_ms);
 void					create_thread(t_argument *argument, pthread_t **threads,
-							t_forks *forks, long start_time_in_ms);
+							pthread_t **waiter_thread, t_forks *forks,
+							long start_time_in_ms);
 void					thinking(t_philosophers *philo);
 void					handle_death(t_philosophers *philo);
 void					check_elapsed_time(t_philosophers *philo);
