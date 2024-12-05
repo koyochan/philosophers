@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 12:52:55 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 12:17:05 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:27:00 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,25 @@ void	handle_single_philosopher(t_philosophers *philo, int left_fork)
 	pthread_mutex_unlock(&philo->forks->mutex[left_fork]);
 	pthread_exit(NULL);
 }
-
 void	lock_forks(t_philosophers *philo, int left_fork, int right_fork)
 {
-	while (pthread_mutex_trylock(&philo->forks->mutex[left_fork]) != 0)
+	if (philo->id % 2 == 0)
 	{
+		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
 		philo->is_holding_left_fork = holding_fork;
 		check_live_or_die(philo);
-		usleep(500);
-	}
-	while (pthread_mutex_trylock(&philo->forks->mutex[right_fork]) != 0)
-	{
+		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
 		philo->is_holding_right_fork = holding_fork;
 		check_live_or_die(philo);
-		usleep(500);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->forks->mutex[right_fork]);
+		philo->is_holding_right_fork = holding_fork;
+		check_live_or_die(philo);
+		pthread_mutex_lock(&philo->forks->mutex[left_fork]);
+		philo->is_holding_left_fork = holding_fork;
+		check_live_or_die(philo);
 	}
 }
 
