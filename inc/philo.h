@@ -6,12 +6,15 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/27 11:29:04 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:13:46 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define holding_fork 1
+# define put_fork 0
 
 # include <pthread.h>
 # include <stdio.h>
@@ -44,7 +47,10 @@ typedef struct s_forks
 typedef struct s_philosophers
 {
 	long				start_time_in_ms;
-	int					is_holding_forks;
+	int					is_holding_left_fork;
+	int					is_holding_right_fork;
+	int					right_fork;
+	int					left_fork;
 	int					id;
 	struct timeval		start;
 	struct timeval		now;

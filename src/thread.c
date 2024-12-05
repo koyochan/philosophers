@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 22:11:00 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:00:10 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 		exit_with_message("malloc failed");
 	philo->start_time_in_ms = start_time_in_ms;
 	philo->forks = forks;
+	philo->left_fork = i - 1;
+	philo->right_fork = i % argument->number_of_philosophers;
 	philo->id = i;
 	philo->number_of_philosophers = argument->number_of_philosophers;
 	philo->argument = argument;

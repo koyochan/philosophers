@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:20:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/11/30 22:11:21 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:14:30 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_death(t_philosophers *philo)
 		print_time_stamp_with_message(philo, "died");
 	}
 	pthread_mutex_unlock(&philo->argument->end_mutex);
-	if (philo->is_holding_forks)
+	if (philo->is_holding_left_fork || philo->is_holding_right_fork)
 		put_forks(philo, 1);
 	pthread_exit(NULL);
 }
