@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 12:00:10 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:32:49 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 	long		current_time_in_ms;
 	long		elapsed_time;
 
+	pthread_mutex_lock(&philo->argument->end_mutex);
+	if (ft_strcmp(mes, "died") != 0 && philo->argument->stop_simulation)
+	{
+		pthread_mutex_unlock(&philo->argument->end_mutex);
+		pthread_exit(NULL);
+	}
 	if (gettimeofday(&timeval, NULL) == 0)
 	{
 		current_time_in_ms = (timeval.tv_sec * 1000) + (timeval.tv_usec / 1000);
@@ -26,9 +32,10 @@ void	print_time_stamp_with_message(t_philosophers *philo, char *mes)
 	}
 	else
 	{
+		pthread_mutex_unlock(&philo->argument->end_mutex);
 		exit_with_message("Error: gettimeofday failed");
 	}
-	return ;
+	pthread_mutex_unlock(&philo->argument->end_mutex);
 }
 
 void	loop_until_died(t_philosophers *philo)

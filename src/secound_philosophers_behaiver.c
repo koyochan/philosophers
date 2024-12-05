@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:20:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 12:14:30 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:36:08 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_death(t_philosophers *philo)
 	if (philo->argument->stop_simulation == 0)
 	{
 		philo->argument->stop_simulation = 1;
+		pthread_mutex_unlock(&philo->argument->end_mutex);
 		print_time_stamp_with_message(philo, "died");
 	}
 	pthread_mutex_unlock(&philo->argument->end_mutex);
