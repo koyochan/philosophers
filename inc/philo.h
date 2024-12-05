@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 12:34:25 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 12:34:08 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:18:56 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void					exit_with_message(char *msg);
 void					operation_thread(t_argument *argument, t_forks *forks,
 							long start_time_in_ms);
 void					create_thread(t_argument *argument, pthread_t **threads,
-							t_forks *forks, long start_time_in_ms);
+							pthread_t **waiter_thread, t_forks *forks,
+							long start_time_in_ms);
 void					thinking(t_philosophers *philo);
 void					handle_death(t_philosophers *philo);
 void					check_elapsed_time(t_philosophers *philo);

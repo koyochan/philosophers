@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:16:52 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 15:05:12 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:57:52 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 		long start_time_in_ms)
 {
 	pthread_t	*threads;
+	pthread_t	*waiter_thread;
 	void		*thread_result;
+	void		*waiter_result;
 	int			status;
 	int			i;
 
-	create_thread(argument, &threads, forks, start_time_in_ms);
+	create_thread(argument, &threads, &waiter_thread, forks, start_time_in_ms);
 	i = 1;
 	while (i <= argument->number_of_philosophers)
 	{
@@ -51,7 +53,11 @@ void	operation_thread(t_argument *argument, t_forks *forks,
 			exit_with_message("pthread_join failed");
 		i++;
 	}
+	status = pthread_join(*waiter_thread, &waiter_result);
+	if (status != 0)
+		exit_with_message("pthread_join failed");
 	free(threads);
+	free(waiter_thread);
 	cleanup_resources(argument, forks);
 }
 

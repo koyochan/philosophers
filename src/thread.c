@@ -6,7 +6,7 @@
 /*   By: kotkobay <kotkobay@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:26:16 by kotkobay          #+#    #+#             */
-/*   Updated: 2024/12/05 14:08:00 by kotkobay         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:10:00 by kotkobay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,27 @@ void	*thread_function(void *arg)
 	pthread_exit(NULL);
 }
 
+void	*waiter_function(void *arg)
+{
+	t_argument	*argument;
+
+	argument = (t_argument *)arg;
+	printf("%d\n", argument->time_to_die);
+	// while (!argument->stop_simulation)
+	// {
+	// 	pthread_mutex_lock(&argument->end_mutex);
+	// 	// シミュレーション終了条件を確認
+	// 	if (argument->stop_simulation)
+	// 	{
+	// 		pthread_mutex_unlock(&argument->end_mutex);
+	// 		break ;
+	// 	}
+	// 	pthread_mutex_unlock(&argument->end_mutex);
+	// 	usleep(100);
+	// }
+	pthread_exit(NULL);
+}
+
 t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 		long start_time_in_ms)
 {
@@ -80,8 +101,8 @@ t_philosophers	*create_philo(t_argument *argument, int i, t_forks *forks,
 	return (philo);
 }
 
-void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
-		long start_time_in_ms)
+void	create_thread(t_argument *argument, pthread_t **threads,
+		pthread_t **waiter_thread, t_forks *forks, long start_time_in_ms)
 {
 	t_philosophers	*philo;
 	int				i;
@@ -99,5 +120,19 @@ void	create_thread(t_argument *argument, pthread_t **threads, t_forks *forks,
 		if (status != 0)
 			exit_with_message("pthread_create failed");
 		i++;
+	}
+	*waiter_thread = malloc(1 * sizeof(pthread_t));
+	if (!(*waiter_thread))
+	{
+		free(*threads);
+		exit_with_message("malloc Error for waiter_thread");
+	}
+	status = pthread_create(*waiter_thread, NULL, waiter_function,
+			(void *)argument);
+	if (status != 0)
+	{
+		free(*threads);
+		free(*waiter_thread);
+		exit_with_message("pthread_create failed for waiter_thread");
 	}
 }
